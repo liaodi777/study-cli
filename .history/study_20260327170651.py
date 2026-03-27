@@ -47,19 +47,6 @@ def stop():
     save_data(data)
     print(f"お疲れ！{minutes}分{seconds}秒勉強したよ✨")
 
-def list_sessions():
-    data = load_data()
-    sessions = data["sessions"]
-    if len(sessions) == 0:
-        print("まだ記録がないよ！")
-        return
-    print("--- 学習記録 ---")
-    for session in sessions:
-        print(f"{session['date']} {session['minutes']}分")
-    total = sum(s["minutes"] for s in sessions)
-    print(f"----------------")
-    print(f"合計: {total}分")
-
 def main():
     if len(sys.argv) < 2:
         print("使い方: python3 study.py [start/stop/list]")
@@ -69,8 +56,6 @@ def main():
         start()
     elif command == "stop":
         stop()
-    elif command == "list":
-        list_sessions()
     else:
         print(f"知らないコマンドだよ: {command}")
 

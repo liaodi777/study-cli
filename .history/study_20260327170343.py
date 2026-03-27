@@ -33,9 +33,7 @@ def stop():
     start_time = datetime.datetime.fromisoformat(data["active_start"])
     end_time = datetime.datetime.now()
     duration = end_time - start_time
-    total_seconds = int(duration.total_seconds())
-    minutes = total_seconds // 60
-    seconds = total_seconds % 60
+    minutes = int(duration.total_seconds() // 60)
     session = {
         "date": end_time.strftime("%Y-%m-%d"),
         "start": data["active_start"],
@@ -45,20 +43,7 @@ def stop():
     data["sessions"].append(session)
     data["active_start"] = None
     save_data(data)
-    print(f"お疲れ！{minutes}分{seconds}秒勉強したよ✨")
-
-def list_sessions():
-    data = load_data()
-    sessions = data["sessions"]
-    if len(sessions) == 0:
-        print("まだ記録がないよ！")
-        return
-    print("--- 学習記録 ---")
-    for session in sessions:
-        print(f"{session['date']} {session['minutes']}分")
-    total = sum(s["minutes"] for s in sessions)
-    print(f"----------------")
-    print(f"合計: {total}分")
+    print(f"お疲れ！{minutes}分勉強したよ✨")
 
 def main():
     if len(sys.argv) < 2:
@@ -69,8 +54,6 @@ def main():
         start()
     elif command == "stop":
         stop()
-    elif command == "list":
-        list_sessions()
     else:
         print(f"知らないコマンドだよ: {command}")
 
