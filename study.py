@@ -30,6 +30,7 @@ def stop():
     if data["active_start"] is None:
         print("まだ学習開始してないよ！先にstartしてね")
         return
+    subject = input("何を勉強した？: ")
     start_time = datetime.datetime.fromisoformat(data["active_start"])
     end_time = datetime.datetime.now()
     duration = end_time - start_time
@@ -38,6 +39,7 @@ def stop():
     seconds = total_seconds % 60
     session = {
         "date": end_time.strftime("%Y-%m-%d"),
+        "subject": subject,
         "start": data["active_start"],
         "end": end_time.isoformat(),
         "minutes": minutes
@@ -45,7 +47,7 @@ def stop():
     data["sessions"].append(session)
     data["active_start"] = None
     save_data(data)
-    print(f"お疲れ！{minutes}分{seconds}秒勉強したよ✨")
+    print(f"お疲れ！{subject}を{minutes}分{seconds}秒勉強したよ✨")
 
 def list_sessions():
     data = load_data()
@@ -55,7 +57,7 @@ def list_sessions():
         return
     print("--- 学習記録 ---")
     for session in sessions:
-        print(f"{session['date']} {session['minutes']}分")
+        print(f"{session['date']} {session.get('subject', '未記入')} {session['minutes']}分")
     total = sum(s["minutes"] for s in sessions)
     print(f"----------------")
     print(f"合計: {total}分")
